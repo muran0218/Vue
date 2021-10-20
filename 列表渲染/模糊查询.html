@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模糊查询</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <input type="text" v-model="kyword">
+        <ul >
+            <li v-for="(p, index) in filPerons" :key="p.id">
+                {{p.id}} - {{p.name}} - {{p.age}}
+            </li>
+        </ul>
+        <button @click="sortType = 1">升序</button>
+        <button @click="sortType = 2">降序</button>
+        <button @click="sortType = 0">原顺序</button>
+        
+    </div>  
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false
+
+   var vm =  new Vue({
+        el:"#root",
+        data:{
+            kyword:'',
+            sortType:0, // 0原顺序 1升序 2降序
+            persons:[
+                {id:"1",name:"马冬梅",sex:"女",age:40},
+                {id:"2",name:"周冬雨",sex:"女",age:25},
+                {id:"3",name:"周杰伦",sex:"男",age:45},
+                {id:"4",name:"温兆伦",sex:"男",age:43}
+            ]
+        },
+        computed:{
+            filPerons(){
+                const arr =  this.persons.filter((p)=>{
+                    return p.name.indexOf(this.kyword) !== -1
+                })
+                //判断一下是否要排序
+                if(this.sortType){
+                    arr.sort((p1,p2)=>{
+                        return this.sortType === 1 ? p1.age-p2.age : p2.age-p1.age 
+                    })
+                }
+                return arr
+            }
+        }
+    })
+</script>
+</html>
