@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件的嵌套</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+   
+    <div id="root">
+        <!--使用局部组件-->
+        <app></app>
+
+    </div>
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false
+
+    //定义school组件的子组件
+    const student = Vue.extend({
+        template:`
+        <div>
+                <h2>学神名称:{{studentName}}</h2>
+                <h2>学校年龄：{{studentAge}}</h2>
+            </div>
+        `,
+        data(){
+            return{
+                studentName:'MuRan',
+                studentAge:18
+            }
+        }
+    })
+
+    //定义局部组件组件
+    const school =Vue.extend({
+        template:`
+            <div>
+                <h2>学校名称:{{schoolName}}</h2>
+                <h2>学校地址：{{schoolAddr}}</h2>
+                <button @click="showName()">点我显示学校名称</button>
+                <student></student>    
+            </div>
+        `,
+        data(){
+            return{
+                schoolName:'杭州qf',
+                schoolAddr:'杭州'
+            }
+        },
+        methods: {
+            showName(){
+                alert(this.schoolName)
+            }
+        },
+        components:{
+            student
+        }
+    })
+  
+    //定义跟school组件平级的hello组件
+    const hello = Vue.extend({
+        template:`
+            <div>
+                <h2>{{name}}</h2>
+            </div>
+        `,
+        data(){
+            return{
+                name:'沐染'
+            }
+        }
+    })  
+
+    //定义管理所有组件的组件
+    const app = Vue.extend({
+        template:`
+        <div>
+            <hello></hello>
+            <school></school>
+
+        </div>
+        `,
+        components:{
+            school,
+            hello
+        }
+    })
+    
+    var vm =  new Vue({
+        el:"#root",
+        data:{
+            
+        },
+        //注册组件
+        components:{
+            //组件名称：定义的组件
+            app:app
+        }
+    })
+</script>
+</html>
